@@ -232,6 +232,24 @@ a { color: inherit; text-decoration: none; }
   color: var(--muted);
   margin: 0 0 32px;
 }
+.subsection { margin-top: 56px; }
+.subsection-title {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--accent);
+  margin: 0 0 6px;
+}
+.subsection-sub {
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--muted);
+  margin: 0 0 26px;
+}
 .gallery--feature {
   column-count: 1;
   max-width: 720px;
