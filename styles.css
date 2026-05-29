@@ -501,7 +501,7 @@ a { color: inherit; text-decoration: none; }
 .filter-btn:hover { color: var(--accent); }
 .filter-btn.is-active { color: var(--accent); font-weight: 600; }
 .filter-count { font-size: 11px; color: var(--muted); }
-.filter-years { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.filter-years { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .filter-years .filter-btn { padding: 5px 0; }
 .journal-empty { text-align: center; color: var(--muted); padding: 50px 0; }
 .journal-card[hidden] { display: none; }
