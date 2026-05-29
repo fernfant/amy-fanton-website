@@ -209,6 +209,28 @@ a { color: inherit; text-decoration: none; }
 .about-copy .section-title { margin-bottom: 22px; }
 .about-copy p { color: #4f4842; margin: 0 0 20px; max-width: 52ch; }
 
+/* ---------- Featured ---------- */
+.featured { text-align: center; border-top: 1px solid var(--line); }
+.featured .section-head { margin-bottom: 44px; }
+.featured-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px 56px;
+}
+.featured-list li {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+  color: var(--muted);
+  letter-spacing: 0.01em;
+}
+.featured-list a { transition: color 0.25s ease; }
+.featured-list a:hover { color: var(--accent); }
+
 /* ---------- Contact ---------- */
 .contact { text-align: center; background: var(--bg-soft); max-width: none; }
 .contact .section-head { margin-bottom: 40px; }
