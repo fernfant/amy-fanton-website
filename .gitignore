@@ -2,5 +2,6 @@
 .claude/
 .venv-img/
 Recovered/
+Vault/
 __pycache__/
 *.pyc
