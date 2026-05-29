@@ -5,7 +5,21 @@ IMG  = ROOT/"images/blog"
 GAL  = IMG/"gallery"
 BLOGDIR = ROOT/"blog"
 FEAT = pathlib.Path("/tmp/feat_imgs")
+NEW_SRC = ROOT/"Vault/Wayback-Recovered"
 POSTS = {p["slug"]: p for p in json.load(open("/tmp/blog_data/posts.json"))}
+try:
+    NEWTEXT = json.load(open("/tmp/blog_data/new_text.json"))
+except FileNotFoundError:
+    NEWTEXT = {}
+
+# clean up a few harvested titles
+TITLE_OVERRIDE = {
+ "american-family-photographer-in-london": "An American Family in London",
+ "june-20-2013": "Little Ladies at Harkness",
+ "mr-charming-june-21-2013": "Mr. Charming",
+ "party-of-six-in-stonington-ct-june-22-2013": "Party of Six in Stonington",
+ "three-is-the-magic-number-wilcox-park-ri": "Three is the Magic Number",
+}
 GAL.mkdir(parents=True, exist_ok=True)
 BLOGDIR.mkdir(exist_ok=True)
 
@@ -58,6 +72,11 @@ CUR = [
 
 def clean_para(t): return re.sub(r"\s+"," ",t).strip()
 
+def clean_title(t):
+    t = re.split(r'\s*[-–—|]{1,2}\s*', t)[0]
+    t = re.split(r'\s+by\s+', t, flags=re.I)[0]
+    return re.sub(r'\s+', ' ', t).strip()
+
 def split_paras(t, target=300, hard=520):
     # Break a long single blob into readable paragraphs at sentence boundaries.
     if len(t) <= hard: return [t]
@@ -79,8 +98,8 @@ def valid_jpeg(p):
         with open(p,"rb") as f: return f.read(3)==b"\xff\xd8\xff"
     except Exception: return False
 
-def copy_gallery(slug, gdir):
-    src = FEAT/gdir
+def copy_gallery(slug, src):
+    src = pathlib.Path(src)
     if not src.exists(): return []
     out = GAL/slug; out.mkdir(parents=True, exist_ok=True)
     files = sorted([f for f in src.iterdir() if f.suffix.lower() in (".jpg",".jpeg",".png")])
@@ -134,7 +153,7 @@ for slug,kind,cat,gdir,fb,dov,tov,iov in CUR:
     title = tov or p.get("title") or slug.replace("-"," ").title()
     date_iso = dov or p.get("date") or ""
     is_year = bool(re.fullmatch(r"\d{4}", date_iso or ""))
-    gallery = copy_gallery(slug, gdir) if gdir else []
+    gallery = copy_gallery(slug, FEAT/gdir) if gdir else []
     cover_fs = IMG/f"{slug}.jpg"
     cover = f"images/blog/{slug}.jpg" if valid_jpeg(cover_fs) else (gallery[0] if gallery else None)
     if not cover:
@@ -152,6 +171,25 @@ for slug,kind,cat,gdir,fb,dov,tov,iov in CUR:
         paras.append(("p", clean_para(iov)))
     built.append(dict(slug=slug,title=title,cat=cat,date_iso=date_iso,is_year=is_year,
                       cover=cover,gallery=gallery,paras=paras))
+
+built_slugs = {b["slug"] for b in built}
+new_built = 0
+for slug, rec in NEWTEXT.items():
+    if slug in built_slugs: continue
+    title = TITLE_OVERRIDE.get(slug) or clean_title(rec.get("title") or "") or slug.replace("-"," ").title()
+    date_iso = rec.get("date") or ""
+    gallery = copy_gallery(slug, NEW_SRC/slug)
+    cover_fs = IMG/f"{slug}.jpg"
+    cover = f"images/blog/{slug}.jpg" if valid_jpeg(cover_fs) else (gallery[0] if gallery else None)
+    paras=[]
+    for para in rec.get("paras",[]):
+        cp=clean_para(para)
+        if len(cp)<=40: continue
+        if re.search(r"(please contact me|if you'?d like to discuss|get in touch).{0,80}(@|\d{6,})", cp, re.I): continue
+        for sp in split_paras(cp): paras.append(("p",sp))
+    built.append(dict(slug=slug,title=title,cat=rec.get("cat","Family"),date_iso=date_iso,
+                      is_year=False,cover=cover,gallery=gallery,paras=paras,pending=(cover is None)))
+    new_built += 1
 
 def sortkey(b):
     d=b["date_iso"]
@@ -203,10 +241,13 @@ for b in built:
 cards=[]
 for b in built:
     datedisp = b["date_iso"] if b["is_year"] else disp_date(b["date_iso"])
-    cover = b["cover"] or "images/blog/"+b["slug"]+".jpg"
     yr = b["date_iso"][:4]
-    cards.append(f'''        <a class="journal-card" href="{esc(b['slug'])}.html" data-cat="{esc(b['cat'])}" data-year="{esc(yr)}">
-          <div class="journal-thumb"><img src="../{esc(cover)}" alt="{esc(b['title'])}" loading="lazy" /></div>
+    if b["cover"]:
+        thumb = f'<div class="journal-thumb"><img src="../{esc(b["cover"])}" alt="{esc(b["title"])}" loading="lazy" /></div>'
+    else:
+        thumb = f'<div class="journal-thumb journal-thumb--empty"><span class="thumb-mono">AF</span><span class="thumb-cat">{esc(b["cat"])}</span></div>'
+    cards.append(f'''        <a class="journal-card{' is-pending' if b.get('pending') else ''}" href="{esc(b['slug'])}.html" data-cat="{esc(b['cat'])}" data-year="{esc(yr)}">
+          {thumb}
           <div class="journal-meta">
             <p class="journal-cat">{esc(b['cat'])}</p>
             <h2 class="journal-title">{esc(b['title'])}</h2>
@@ -285,6 +326,7 @@ idx += f'''
 '''
 (BLOGDIR/"index.html").write_text(idx)
 
-print(f"Built {len(built)} posts")
+pending=[b for b in built if b.get("pending")]
+print(f"Built {len(built)} posts ({new_built} new from Wayback text; {len(pending)} awaiting photos)")
 for b in built:
     print(f"  {('YEAR' if b['is_year'] else 'DATE')} {b['date_iso']:11} {b['cat']:18} cover={'Y' if b['cover'] else 'N'} gal={len(b['gallery']):2}  {b['title']}")
