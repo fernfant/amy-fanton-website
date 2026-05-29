@@ -1,21 +1,18 @@
 document.getElementById("year").textContent = new Date().getFullYear();
 
-const items = [...document.querySelectorAll(".gallery-item")];
+const imgs = [...document.querySelectorAll(".gallery img")];
 const lb = document.getElementById("lightbox");
 const lbImg = document.getElementById("lbImg");
-let view = items.slice(); // currently visible items the lightbox cycles through
 let idx = 0;
 
 function show(i) {
-  idx = (i + view.length) % view.length;
-  const el = view[idx].querySelector("img");
+  idx = (i + imgs.length) % imgs.length;
+  const el = imgs[idx];
   lbImg.src = el.src;
   lbImg.alt = el.alt;
 }
 
-function open(item) {
-  const i = view.indexOf(item);
-  if (i === -1) return;
+function open(i) {
   show(i);
   lb.classList.add("open");
   lb.setAttribute("aria-hidden", "false");
@@ -28,7 +25,7 @@ function close() {
   document.body.style.overflow = "";
 }
 
-items.forEach((item) => item.addEventListener("click", () => open(item)));
+imgs.forEach((el, i) => el.addEventListener("click", () => open(i)));
 document.getElementById("lbClose").addEventListener("click", close);
 document.getElementById("lbNext").addEventListener("click", () => show(idx + 1));
 document.getElementById("lbPrev").addEventListener("click", () => show(idx - 1));
@@ -39,29 +36,6 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") close();
   if (e.key === "ArrowRight") show(idx + 1);
   if (e.key === "ArrowLeft") show(idx - 1);
-});
-
-// ---------- Category filters ----------
-const pills = [...document.querySelectorAll(".filter-pill")];
-const emptyMsg = document.getElementById("galleryEmpty");
-function applyFilter(cat) {
-  view = [];
-  items.forEach((item) => {
-    const match = cat === "all" || item.dataset.cat === cat;
-    item.hidden = !match;
-    if (match) view.push(item);
-  });
-  if (emptyMsg) emptyMsg.hidden = view.length > 0;
-}
-pills.forEach((pill) => {
-  pill.addEventListener("click", () => {
-    pills.forEach((p) => {
-      const on = p === pill;
-      p.classList.toggle("is-active", on);
-      p.setAttribute("aria-pressed", on ? "true" : "false");
-    });
-    applyFilter(pill.dataset.filter);
-  });
 });
 
 const form = document.getElementById("contactForm");
