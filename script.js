@@ -1,19 +1,25 @@
 document.getElementById("year").textContent = new Date().getFullYear();
 
-const imgs = [...document.querySelectorAll(".gallery img")];
 const lb = document.getElementById("lightbox");
 const lbImg = document.getElementById("lbImg");
 let idx = 0;
 
+const visible = () =>
+  [...document.querySelectorAll(".category:not([hidden]) .gallery img")];
+
 function show(i) {
-  idx = (i + imgs.length) % imgs.length;
-  const el = imgs[idx];
+  const v = visible();
+  if (!v.length) return;
+  idx = (i + v.length) % v.length;
+  const el = v[idx];
   lbImg.src = el.src;
   lbImg.alt = el.alt;
 }
 
-function open(i) {
-  show(i);
+function open(el) {
+  const v = visible();
+  idx = v.indexOf(el);
+  show(idx);
   lb.classList.add("open");
   lb.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
@@ -25,7 +31,23 @@ function close() {
   document.body.style.overflow = "";
 }
 
-imgs.forEach((el, i) => el.addEventListener("click", () => open(i)));
+document.querySelectorAll(".gallery img").forEach((el) =>
+  el.addEventListener("click", () => open(el))
+);
+
+const pills = [...document.querySelectorAll(".filter-pill")];
+const cats = [...document.querySelectorAll(".category")];
+pills.forEach((p) =>
+  p.addEventListener("click", () => {
+    const f = p.dataset.filter;
+    pills.forEach((q) => {
+      const on = q === p;
+      q.classList.toggle("is-active", on);
+      q.setAttribute("aria-pressed", on);
+    });
+    cats.forEach((c) => (c.hidden = f !== "all" && c.dataset.cat !== f));
+  })
+);
 document.getElementById("lbClose").addEventListener("click", close);
 document.getElementById("lbNext").addEventListener("click", () => show(idx + 1));
 document.getElementById("lbPrev").addEventListener("click", () => show(idx - 1));

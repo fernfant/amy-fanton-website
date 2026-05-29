@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Amy Fanton Photography — Fine Art Wedding & Portrait Photography</title>
   <meta name="description" content="Amy Fanton is a fine art wedding and portrait photographer based in London, shooting medium format film and digital for luminous, romantic, natural images worldwide." />
-  <meta name="version" content="1.19" />
+  <meta name="version" content="1.20" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Theano+Didot&display=swap" rel="stylesheet" />
@@ -52,7 +52,14 @@
       <h2 class="section-title">Portfolio</h2>
     </header>
 
-    <div class="category">
+    <div class="filters" role="tablist" aria-label="Filter portfolio by category">
+      <button class="filter-pill is-active" data-filter="all" aria-pressed="true">All</button>
+      <button class="filter-pill" data-filter="weddings" aria-pressed="false">Weddings</button>
+      <button class="filter-pill" data-filter="family" aria-pressed="false">Family &amp; Children</button>
+      <button class="filter-pill" data-filter="newborn" aria-pressed="false">Newborn &amp; Maternity</button>
+    </div>
+
+    <div class="category" data-cat="weddings">
       <h3 class="category-title">Weddings</h3>
       <p class="category-sub">From quiet English country gardens to destinations across the world</p>
       <div class="gallery">
@@ -115,7 +122,7 @@
       </div>
     </div>
 
-    <div class="category">
+    <div class="category" data-cat="family">
       <h3 class="category-title">Family &amp; Children</h3>
       <p class="category-sub">Relaxed, natural portraits of growing families</p>
       <div class="gallery">
@@ -139,7 +146,7 @@
       </div>
     </div>
 
-    <div class="category">
+    <div class="category" data-cat="newborn">
       <h3 class="category-title">Newborn &amp; Maternity</h3>
       <p class="category-sub">Tender, quiet portraits of the very first days &mdash; and the wait before</p>
       <div class="gallery">
