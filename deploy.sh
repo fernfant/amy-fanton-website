@@ -16,7 +16,10 @@ fi
 
 git checkout main >/dev/null 2>&1
 # Restore only the site content; CNAME and deploy.sh are left untouched.
-git checkout "$TAG" -- index.html styles.css script.js images
+# Wipe images first so files a newer version added don't linger after a rollback.
+git checkout "$TAG" -- index.html styles.css script.js
+git rm -rf --quiet images >/dev/null 2>&1 || true
+git checkout "$TAG" -- images
 
 if git diff --cached --quiet; then
   echo "$TAG is already live — nothing to deploy."; exit 0
