@@ -98,9 +98,9 @@ a { color: inherit; text-decoration: none; }
 }
 .hero-logo {
   display: block;
-  width: clamp(280px, 46vw, 560px);
+  width: clamp(320px, 52vw, 620px);
   height: auto;
-  filter: drop-shadow(0 2px 30px rgba(0,0,0,0.35));
+  filter: drop-shadow(0 2px 22px rgba(0,0,0,0.28));
 }
 .hero-tagline {
   font-family: var(--serif);
