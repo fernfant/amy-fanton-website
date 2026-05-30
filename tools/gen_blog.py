@@ -131,6 +131,7 @@ NAV = '''<header class="site-header" id="top">
       <a href="../index.html#portfolio" class="nav-link">Portfolio</a>
       <a href="index.html" class="nav-link">Journal</a>
       <a href="../index.html#about" class="nav-link">About</a>
+      <a href="../index.html#press" class="nav-link">Press</a>
       <a href="../index.html#contact" class="nav-link">Contact</a>
       <a href="https://www.instagram.com/amyfanton/" target="_blank" rel="noopener" class="nav-link">Instagram</a>
     </nav>
