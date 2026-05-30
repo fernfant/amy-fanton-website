@@ -77,6 +77,14 @@ CUR = [
  ("blush-pink-beach-inspiration","gallery","Inspiration","blush-pink-beach",None,"2016",
    "Blush Pink Beach Inspiration",
    "Soft blush tones and sea breeze — a romantic beachside bridal inspiration shoot. Featured on B.Loved."),
+ ("lake-annecy-wedding-in-talloires","gallery","Weddings","lakeannecy",
+   "A spring wedding on the shores of Lake Annecy, beneath the snow-capped peaks of the French Alps.",
+   "2018-12-11","A Lake Annecy Wedding in Talloires",
+   "The couple married at the historic L'Abbaye de Talloires, the bride in a delicate long-sleeved lace gown by Suzanne Neville. Their celebration wove together English and Kenyan family traditions, framed by the still water and mountains of Haute-Savoie. Featured on Style Me Pretty."),
+ ("modern-french-chateau-wedding-courcelles-le-roy","gallery","Weddings","chateau",
+   "A modern celebration at Château Courcelles Le Roy in the French countryside.",
+   "2018-11-21","A Modern French Château Wedding",
+   "Golden-hour portraits across the château grounds — the groom in a sharp blue suit, the bride in lace — with soft peach and gold woven through the flowers, stationery and styling. Featured on Style Me Pretty."),
 ]
 
 def clean_para(t): return re.sub(r"\s+"," ",t).strip()
