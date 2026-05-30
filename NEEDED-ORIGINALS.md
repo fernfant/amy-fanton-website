@@ -1,6 +1,6 @@
 # Journal posts awaiting Amy’s original photos
 
-_24 posts have text + a cover but no gallery. Their old galleries are not recoverable online (Wayback archived the pages but none of the image files). Drop each shoot’s photos into the folder noted, then ask Claude to regenerate._
+_23 posts have text + a cover but no gallery. Their old galleries are not recoverable online (Wayback archived the pages but none of the image files). Drop each shoot’s photos into the folder noted, then ask Claude to regenerate._
 
 | Date | Category | Title | Frames needed | Drop folder |
 |---|---|---|---:|---|
@@ -27,6 +27,5 @@ _24 posts have text + a cover but no gallery. Their old galleries are not recove
 | 21 August 2016 | Weddings | Christmas Hengrave Hall Wedding Photography | 54 | `Vault/Wayback-Recovered/christmas-hengrave-hall-wedding-photography/` |
 | 31 August 2016 | Inspiration | Pink &amp; Blue Harkness Wedding Photography | 14 | `Vault/Wayback-Recovered/coastal-bridal-shoot/` |
 | 22 February 2017 | Engagements | Chelsea Engagement Photos | 18 | `Vault/Wayback-Recovered/chelsea-engagement-photos/` |
-| 24 May 2017 | Weddings | Louise Roe&#x27;s Dorney Court Wedding | 63 | `Vault/Wayback-Recovered/louise-roe-dorney-court-wedding/` |
 
 **Total frames across all posts: 566**
