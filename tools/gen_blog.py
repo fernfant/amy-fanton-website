@@ -9,6 +9,25 @@ def dims(rel):
         except Exception: _dim_cache[rel] = ""
     return _dim_cache[rel]
 
+def og_image(src_rel, out_rel, W=1200, H=630):
+    """Center-crop src image to a 1200x630 landscape share card. Returns out_rel or None."""
+    try:
+        src = ROOT/src_rel
+        if not src.exists(): return None
+        out = ROOT/out_rel; out.parent.mkdir(parents=True, exist_ok=True)
+        with Image.open(src) as im:
+            im = im.convert("RGB")
+            w, h = im.size
+            scale = max(W/w, H/h)
+            nw, nh = int(w*scale+0.5), int(h*scale+0.5)
+            im = im.resize((nw, nh), Image.LANCZOS)
+            l = (nw-W)//2
+            t = int((nh-H)*0.18)  # bias toward top so faces survive on full-length portraits
+            im.crop((l, t, l+W, t+H)).save(out, "JPEG", quality=85)
+        return out_rel
+    except Exception:
+        return None
+
 ROOT = pathlib.Path("/Users/fernando/Projects/amy-fanton-website")
 BASE = "https://www.fantonphotography.com/"
 IMG  = ROOT/"images/blog"
@@ -251,10 +270,11 @@ for b in built:
         gal_html=f'\n      <div class="post-gallery gallery">\n        {items}\n      </div>'
     datedisp = b["date_iso"] if b["is_year"] else disp_date(b["date_iso"])
     hero = f'<div class="post-hero"><img src="../{esc(b["cover"])}"{dims(b["cover"])} alt="{esc(b["title"])}" /></div>' if b["cover"] else ""
+    _og = og_image(b["cover"], f"images/og/{b['slug']}.jpg") if b.get("cover") else None
     page = HEAD.format(title=esc(b["title"]+" — Amy Fanton Photography"),
                        desc=esc(b["title"]+" — wedding and portrait photography by Amy Fanton."), nav=NAV,
                        canonical=f"{BASE}blog/{b['slug']}.html",
-                       ogimage=(BASE+b["cover"]) if b.get("cover") else f"{BASE}images/originals/photo-17.jpg")
+                       ogimage=f"{BASE}{_og}" if _og else f"{BASE}images/og/home.jpg")
     page += f'''
   <article class="post">
     <header class="post-head">
@@ -345,7 +365,8 @@ FILTER_JS='''(function(){
 idx = HEAD.format(title="Journal &mdash; Amy Fanton Photography",
                   desc="Stories from weddings, elopements and portrait sessions photographed by Amy Fanton in London and around the world.", nav=NAV,
                   canonical=f"{BASE}blog/index.html",
-                  ogimage=f"{BASE}images/originals/photo-17.jpg")
+                  ogimage=f"{BASE}images/og/home.jpg")
+og_image("images/originals/photo-17.jpg", "images/og/home.jpg")
 idx += f'''
   <section class="section journal-intro">
     <header class="section-head">
