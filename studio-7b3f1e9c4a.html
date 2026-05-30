@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <title>Journal Studio — Amy Fanton</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&family=Theano+Didot&display=swap" rel="stylesheet" />
+  <style>
+    :root{--ink:#2b2724;--muted:#8c8377;--line:#e4ddd2;--bg:#fbf9f6;--soft:#f3efe9;--accent:#b69a78;--serif:"Theano Didot",Georgia,serif;--sans:"Open Sans",system-ui,sans-serif;}
+    *{box-sizing:border-box;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;}
+    .wrap{max-width:760px;margin:0 auto;padding:42px 22px 80px;}
+    .eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin:0 0 6px;}
+    h1{font-family:var(--serif);font-size:2.3rem;margin:0 0 4px;}
+    .sub{color:var(--muted);margin:0 0 30px;}
+    .field{display:block;margin:0 0 20px;}
+    .field>span{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+    input[type=text],input[type=date],select,textarea{width:100%;font-family:inherit;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:6px;padding:11px 13px;}
+    textarea{min-height:230px;resize:vertical;line-height:1.6;}
+    .hint{font-size:12px;color:var(--muted);margin:6px 0 0;}
+    .row{display:flex;gap:16px;flex-wrap:wrap;}
+    .row>.field{flex:1;min-width:200px;}
+    .drop{border:1.5px dashed var(--line);border-radius:8px;background:var(--soft);padding:18px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;}
+    .drop:hover{border-color:var(--accent);}
+    .drop.drag{border-color:var(--accent);background:#fff;}
+    .drop input{display:none;}
+    .drop b{color:var(--accent);}
+    .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;margin-top:14px;}
+    .thumb{position:relative;aspect-ratio:1;border-radius:6px;overflow:hidden;background:var(--soft);border:1px solid var(--line);}
+    .thumb img{width:100%;height:100%;object-fit:cover;}
+    .thumb .x{position:absolute;top:4px;right:4px;width:22px;height:22px;border:none;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-size:14px;line-height:22px;cursor:pointer;padding:0;}
+    .thumb .n{position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px;}
+    .hero-prev{margin-top:14px;max-width:260px;border-radius:6px;border:1px solid var(--line);display:none;}
+    .actions{margin-top:34px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+    button.go{font-family:inherit;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--ink);border:none;border-radius:999px;padding:14px 30px;cursor:pointer;transition:background .2s;}
+    button.go:hover{background:#000;}
+    button.go:disabled{opacity:.5;cursor:not-allowed;}
+    .status{font-size:13px;color:var(--muted);}
+    .status.err{color:#b4453a;}
+    .status.ok{color:#3f7d4f;}
+    section.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px;margin-bottom:22px;}
+    h2.sec{font-family:var(--serif);font-size:1.3rem;margin:0 0 18px;}
+    .note{background:var(--soft);border-radius:8px;padding:14px 16px;font-size:13px;color:#5a534b;margin-bottom:26px;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">Private — Journal Studio</p>
+    <h1>New Journal Post</h1>
+    <p class="sub">Fill this in, add your photos, then download the bundle and send it to publish.</p>
+
+    <div class="note">Nothing is published from here. When you press <b>Download bundle</b>, everything is packaged into one <b>.zip</b> file saved to your device — send that file on to have the post added to the website.</div>
+
+    <section class="card">
+      <h2 class="sec">The story</h2>
+      <div class="row">
+        <label class="field"><span>Title</span><input type="text" id="title" placeholder="e.g. A Frosty Morning in Hyde Park" /></label>
+        <label class="field" style="max-width:200px;flex:0 0 200px;"><span>Date</span><input type="date" id="date" /></label>
+      </div>
+      <label class="field"><span>Category</span>
+        <select id="category">
+          <option>Weddings</option>
+          <option>Engagements</option>
+          <option>Family</option>
+          <option>Newborn &amp; Maternity</option>
+          <option>Inspiration</option>
+          <option>Travel</option>
+        </select>
+      </label>
+      <label class="field"><span>Body text</span>
+        <textarea id="body" placeholder="Write the post here. Leave a blank line between paragraphs."></textarea>
+        <p class="hint">Leave a blank line between paragraphs — each block becomes its own paragraph.</p>
+      </label>
+    </section>
+
+    <section class="card">
+      <h2 class="sec">Hero photo</h2>
+      <p class="hint" style="margin-top:0;">The large photo at the top of the post.</p>
+      <div class="drop" id="heroDrop">
+        <input type="file" id="heroInput" accept="image/*" />
+        Drag a photo here or <b>click to choose</b>
+      </div>
+      <img class="hero-prev" id="heroPrev" alt="hero preview" />
+    </section>
+
+    <section class="card">
+      <h2 class="sec">Gallery photos</h2>
+      <p class="hint" style="margin-top:0;">The rest of the photos, in the order you add them. You can add more than one at a time.</p>
+      <div class="drop" id="galDrop">
+        <input type="file" id="galInput" accept="image/*" multiple />
+        Drag photos here or <b>click to choose</b>
+      </div>
+      <div class="thumbs" id="galThumbs"></div>
+    </section>
+
+    <div class="actions">
+      <button class="go" id="download">Download bundle</button>
+      <span class="status" id="status"></span>
+    </div>
+  </div>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const status = (msg, cls="") => { const el=$("#status"); el.textContent=msg; el.className="status "+cls; };
+
+// default date = today (local)
+(()=>{ const d=new Date(); const p=n=>String(n).padStart(2,"0"); $("#date").value=`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`; })();
+
+let heroFile = null;       // {bytes, name}
+let galFiles = [];         // [{id, bytes, name, url}]
+let galSeq = 0;
+
+function slugify(t){ return t.toLowerCase().trim().replace(/['’]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,80) || "untitled-post"; }
+
+// ---- client-side downscale (max 2048 long edge, EXIF-correct) ----
+async function processImage(file, max=2048, quality=0.9){
+  let bmp;
+  try { bmp = await createImageBitmap(file, {imageOrientation:"from-image"}); }
+  catch(e){ bmp = await createImageBitmap(file); }
+  const scale = Math.min(1, max/Math.max(bmp.width, bmp.height));
+  const w = Math.round(bmp.width*scale), h = Math.round(bmp.height*scale);
+  const c = document.createElement("canvas"); c.width=w; c.height=h;
+  c.getContext("2d").drawImage(bmp,0,0,w,h);
+  const blob = await new Promise(r => c.toBlob(r, "image/jpeg", quality));
+  return new Uint8Array(await blob.arrayBuffer());
+}
+
+// ---- hero ----
+function wireDrop(dropEl, inputEl, onFiles){
+  dropEl.addEventListener("click", ()=>inputEl.click());
+  inputEl.addEventListener("change", ()=>{ if(inputEl.files.length) onFiles([...inputEl.files]); inputEl.value=""; });
+  ["dragover","dragenter"].forEach(ev=>dropEl.addEventListener(ev,e=>{e.preventDefault();dropEl.classList.add("drag");}));
+  ["dragleave","drop"].forEach(ev=>dropEl.addEventListener(ev,e=>{e.preventDefault();dropEl.classList.remove("drag");}));
+  dropEl.addEventListener("drop",e=>{ const f=[...e.dataTransfer.files].filter(x=>x.type.startsWith("image/")); if(f.length) onFiles(f); });
+}
+
+wireDrop($("#heroDrop"), $("#heroInput"), async files=>{
+  const file=files[0]; status("Processing hero…");
+  try{
+    heroFile = { bytes: await processImage(file), name:"hero.jpg" };
+    const prev=$("#heroPrev"); prev.src=URL.createObjectURL(new Blob([heroFile.bytes],{type:"image/jpeg"})); prev.style.display="block";
+    status("Hero added.","ok");
+  }catch(e){ status("Couldn't read that image.","err"); }
+});
+
+wireDrop($("#galDrop"), $("#galInput"), async files=>{
+  status(`Processing ${files.length} photo(s)…`);
+  for(const file of files){
+    try{
+      const bytes = await processImage(file);
+      const id = ++galSeq;
+      const url = URL.createObjectURL(new Blob([bytes],{type:"image/jpeg"}));
+      galFiles.push({id, bytes, url});
+    }catch(e){ /* skip unreadable */ }
+  }
+  renderThumbs(); status(`${galFiles.length} gallery photo(s).`,"ok");
+});
+
+function renderThumbs(){
+  const box=$("#galThumbs"); box.innerHTML="";
+  galFiles.forEach((g,i)=>{
+    const d=document.createElement("div"); d.className="thumb";
+    d.innerHTML=`<img src="${g.url}" alt=""><span class="n">${i+1}</span><button class="x" title="Remove">×</button>`;
+    d.querySelector(".x").onclick=()=>{ galFiles=galFiles.filter(x=>x.id!==g.id); renderThumbs(); status(`${galFiles.length} gallery photo(s).`); };
+    box.appendChild(d);
+  });
+}
+
+// ---- minimal store-only ZIP writer (no deps) ----
+const crcTable = (()=>{ const t=[]; for(let n=0;n<256;n++){ let c=n; for(let k=0;k<8;k++) c=c&1?0xEDB88320^(c>>>1):c>>>1; t[n]=c>>>0; } return t; })();
+function crc32(buf){ let c=0xFFFFFFFF; for(let i=0;i<buf.length;i++) c=(c>>>8)^crcTable[(c^buf[i])&0xFF]; return (c^0xFFFFFFFF)>>>0; }
+function buildZip(files){ // files: [{name, data:Uint8Array}]
+  const enc=new TextEncoder(); const chunks=[]; const central=[]; let offset=0;
+  const u16=v=>new Uint8Array([v&255,(v>>8)&255]);
+  const u32=v=>new Uint8Array([v&255,(v>>8)&255,(v>>16)&255,(v>>>24)&255]);
+  for(const f of files){
+    const name=enc.encode(f.name); const data=f.data; const crc=crc32(data);
+    const lf=[u32(0x04034b50),u16(20),u16(0x0800),u16(0),u16(0),u16(0),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),name,data];
+    for(const p of lf) chunks.push(p);
+    const cd=[u32(0x02014b50),u16(20),u16(20),u16(0x0800),u16(0),u16(0),u16(0),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(offset),name];
+    central.push(cd);
+    let lfLen=0; for(const p of lf) lfLen+=p.length; offset+=lfLen;
+  }
+  const cdStart=offset; const cdParts=[]; let cdLen=0;
+  for(const cd of central){ for(const p of cd){ cdParts.push(p); cdLen+=p.length; } }
+  const eocd=[u32(0x06054b50),u16(0),u16(0),u16(files.length),u16(files.length),u32(cdLen),u32(cdStart),u16(0)];
+  const all=[...chunks,...cdParts,...eocd];
+  let total=0; for(const p of all) total+=p.length;
+  const out=new Uint8Array(total); let o=0; for(const p of all){ out.set(p,o); o+=p.length; }
+  return out;
+}
+
+$("#download").addEventListener("click", async ()=>{
+  const title=$("#title").value.trim();
+  const date=$("#date").value;
+  const category=$("#category").value;
+  const body=$("#body").value;
+  const paras=body.split(/\n\s*\n/).map(s=>s.replace(/\s+/g," ").trim()).filter(Boolean);
+  if(!title){ return status("Please add a title.","err"); }
+  if(!date){ return status("Please pick a date.","err"); }
+  if(!paras.length){ return status("Please write the post text.","err"); }
+  if(!heroFile){ return status("Please add a hero photo.","err"); }
+
+  const slug=slugify(title);
+  status("Building bundle…");
+  const files=[];
+  const meta={ slug, title, date, category, paras, hero:"hero.jpg",
+    gallery: galFiles.map((_,i)=>`gallery/${String(i).padStart(2,"0")}.jpg`) };
+  files.push({name:`${slug}/post.json`, data:new TextEncoder().encode(JSON.stringify(meta,null,2))});
+  files.push({name:`${slug}/hero.jpg`, data:heroFile.bytes});
+  galFiles.forEach((g,i)=>files.push({name:`${slug}/gallery/${String(i).padStart(2,"0")}.jpg`, data:g.bytes}));
+  const readme=`Amy Fanton Photography — new Journal post bundle\n\nTitle:    ${title}\nDate:     ${date}\nCategory: ${category}\nSlug:     ${slug}\nHero:     hero.jpg\nGallery:  ${galFiles.length} photo(s)\n\nTo publish: send this whole .zip file on. It contains post.json (the text),\nthe hero photo, and the gallery photos in order. Nothing here is live yet.\n`;
+  files.push({name:`${slug}/README.txt`, data:new TextEncoder().encode(readme)});
+
+  try{
+    const zip=buildZip(files);
+    const blob=new Blob([zip],{type:"application/zip"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`${slug}.zip`;
+    document.body.appendChild(a); a.click(); a.remove();
+    status(`Saved ${slug}.zip (${galFiles.length} gallery photo(s)). Send it on to publish.`,"ok");
+  }catch(e){ status("Something went wrong building the file.","err"); }
+});
+</script>
+</body>
+</html>
