@@ -10,6 +10,7 @@ def dims(rel):
     return _dim_cache[rel]
 
 ROOT = pathlib.Path("/Users/fernando/Projects/amy-fanton-website")
+BASE = "https://www.fantonphotography.com/"
 IMG  = ROOT/"images/blog"
 GAL  = IMG/"gallery"
 BLOGDIR = ROOT/"blog"
@@ -164,6 +165,21 @@ HEAD = '''<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content="{desc}" />
+  <link rel="canonical" href="{canonical}" />
+  <meta name="theme-color" content="#2b2724" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Amy Fanton Photography" />
+  <meta property="og:title" content="{title}" />
+  <meta property="og:description" content="{desc}" />
+  <meta property="og:url" content="{canonical}" />
+  <meta property="og:image" content="{ogimage}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{title}" />
+  <meta name="twitter:image" content="{ogimage}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Theano+Didot&display=swap" rel="stylesheet" />
@@ -236,7 +252,9 @@ for b in built:
     datedisp = b["date_iso"] if b["is_year"] else disp_date(b["date_iso"])
     hero = f'<div class="post-hero"><img src="../{esc(b["cover"])}"{dims(b["cover"])} alt="{esc(b["title"])}" /></div>' if b["cover"] else ""
     page = HEAD.format(title=esc(b["title"]+" — Amy Fanton Photography"),
-                       desc=esc(b["title"]+" — wedding and portrait photography by Amy Fanton."), nav=NAV)
+                       desc=esc(b["title"]+" — wedding and portrait photography by Amy Fanton."), nav=NAV,
+                       canonical=f"{BASE}blog/{b['slug']}.html",
+                       ogimage=(BASE+b["cover"]) if b.get("cover") else f"{BASE}images/originals/photo-17.jpg")
     page += f'''
   <article class="post">
     <header class="post-head">
@@ -325,7 +343,9 @@ FILTER_JS='''(function(){
   });
 })();'''
 idx = HEAD.format(title="Journal &mdash; Amy Fanton Photography",
-                  desc="Stories from weddings, elopements and portrait sessions photographed by Amy Fanton in London and around the world.", nav=NAV)
+                  desc="Stories from weddings, elopements and portrait sessions photographed by Amy Fanton in London and around the world.", nav=NAV,
+                  canonical=f"{BASE}blog/index.html",
+                  ogimage=f"{BASE}images/originals/photo-17.jpg")
 idx += f'''
   <section class="section journal-intro">
     <header class="section-head">
@@ -351,6 +371,15 @@ idx += f'''
 </html>
 '''
 (BLOGDIR/"index.html").write_text(idx)
+
+# sitemap.xml — home + journal index + every post (studio page excluded on purpose)
+urls=[BASE, BASE+"blog/index.html"] + [f"{BASE}blog/{b['slug']}.html" for b in built]
+sm=['<?xml version="1.0" encoding="UTF-8"?>','<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+for u in urls:
+    sm.append(f'  <url><loc>{u}</loc></url>')
+sm.append('</urlset>')
+(ROOT/"sitemap.xml").write_text("\n".join(sm)+"\n")
+print(f"Wrote sitemap.xml ({len(urls)} urls)")
 
 pending=[b for b in built if b.get("pending")]
 print(f"Built {len(built)} posts ({new_built} new from Wayback text; {len(pending)} awaiting photos)")
