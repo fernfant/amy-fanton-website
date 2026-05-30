@@ -378,6 +378,24 @@ a { color: inherit; text-decoration: none; }
   transition: color 0.25s ease;
 }
 .contact-link:hover { color: var(--accent); }
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto 34px;
+  padding: 13px 26px;
+  background: #25d366;
+  color: #fff;
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.btn-whatsapp:hover { background: #1da851; transform: translateY(-1px); }
+.btn-whatsapp svg { flex: none; }
 .socials {
   font-size: 12px;
   letter-spacing: 0.22em;
