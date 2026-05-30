@@ -91,3 +91,12 @@ if (form) {
     }
   });
 }
+
+// share: copy-link button
+document.querySelectorAll(".share-copy").forEach((b) => {
+  b.addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(b.dataset.url); } catch (e) {}
+    b.classList.add("copied");
+    setTimeout(() => b.classList.remove("copied"), 1600);
+  });
+});
