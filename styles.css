@@ -33,7 +33,7 @@ a { color: inherit; text-decoration: none; }
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(251, 249, 246, 0.88);
+  background: rgba(251, 249, 246, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
@@ -50,13 +50,14 @@ a { color: inherit; text-decoration: none; }
 
 .nav-link {
   font-size: 15px;
+  font-weight: 600;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #4a443d;
   transition: color 0.25s ease;
   white-space: nowrap;
 }
-.nav-link:hover { color: var(--ink); }
+.nav-link:hover { color: var(--accent); }
 
 /* ---------- Hero ---------- */
 .hero {
