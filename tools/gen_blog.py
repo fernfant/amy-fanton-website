@@ -85,6 +85,10 @@ CUR = [
    "A modern celebration at Château Courcelles Le Roy in the French countryside.",
    "2018-11-21","A Modern French Château Wedding",
    "Golden-hour portraits across the château grounds — the groom in a sharp blue suit, the bride in lace — with soft peach and gold woven through the flowers, stationery and styling. Featured on Style Me Pretty."),
+ ("elegant-argentinian-inspiration-shoot","gallery","Inspiration","argentina-inspiration",
+   "A bright, contemporary Argentinian inspiration shoot in the airy interiors of Buenos Aires.",
+   "2015-05-06","An Elegant Argentinian Inspiration Shoot",
+   "Soft beaded gowns against hand-painted majolica tiles, with greenery, succulents and clean, modern tablescapes — a fresh, light-filled counterpoint to old-world romance. Featured on Style Me Pretty."),
 ]
 
 def clean_para(t): return re.sub(r"\s+"," ",t).strip()
