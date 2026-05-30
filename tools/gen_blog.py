@@ -89,6 +89,10 @@ CUR = [
    "A bright, contemporary Argentinian inspiration shoot in the airy interiors of Buenos Aires.",
    "2015-05-06","An Elegant Argentinian Inspiration Shoot",
    "Soft beaded gowns against hand-painted majolica tiles, with greenery, succulents and clean, modern tablescapes — a fresh, light-filled counterpoint to old-world romance. Featured on Style Me Pretty."),
+ ("nature-inspired-bridal-hair-accessories","gallery","Inspiration","hermione",
+   "A fine-art editorial of nature-inspired bridal hair vines and headpieces, shot for Hermione Harbutt.",
+   "2015-09-16","Nature-Inspired Bridal Hair Accessories",
+   "Delicate floral hair vines, jewelled headpieces and pins styled with soft lace gowns across an English manor and its gardens — a romantic study in bridal detail. Featured on Love My Dress."),
 ]
 
 def clean_para(t): return re.sub(r"\s+"," ",t).strip()
