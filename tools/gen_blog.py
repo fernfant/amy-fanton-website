@@ -1,4 +1,13 @@
 import json, re, shutil, pathlib, html
+from PIL import Image
+
+_dim_cache = {}
+def dims(rel):
+    if rel not in _dim_cache:
+        try:
+            with Image.open(ROOT/rel) as im: _dim_cache[rel] = f' width="{im.size[0]}" height="{im.size[1]}"'
+        except Exception: _dim_cache[rel] = ""
+    return _dim_cache[rel]
 
 ROOT = pathlib.Path("/Users/fernando/Projects/amy-fanton-website")
 IMG  = ROOT/"images/blog"
@@ -204,11 +213,11 @@ for b in built:
     gal_html=""
     if b["gallery"]:
         items="\n        ".join(
-            f'<div class="gallery-item"><img src="../{esc(u)}" alt="{esc(b["title"])} — photograph by Amy Fanton" loading="lazy" /></div>'
+            f'<div class="gallery-item"><img src="../{esc(u)}"{dims(u)} alt="{esc(b["title"])} — photograph by Amy Fanton" loading="lazy" /></div>'
             for u in b["gallery"])
         gal_html=f'\n      <div class="post-gallery gallery">\n        {items}\n      </div>'
     datedisp = b["date_iso"] if b["is_year"] else disp_date(b["date_iso"])
-    hero = f'<div class="post-hero"><img src="../{esc(b["cover"])}" alt="{esc(b["title"])}" /></div>' if b["cover"] else ""
+    hero = f'<div class="post-hero"><img src="../{esc(b["cover"])}"{dims(b["cover"])} alt="{esc(b["title"])}" /></div>' if b["cover"] else ""
     page = HEAD.format(title=esc(b["title"]+" — Amy Fanton Photography"),
                        desc=esc(b["title"]+" — wedding and portrait photography by Amy Fanton."), nav=NAV)
     page += f'''
@@ -243,7 +252,7 @@ for b in built:
     datedisp = b["date_iso"] if b["is_year"] else disp_date(b["date_iso"])
     yr = b["date_iso"][:4]
     if b["cover"]:
-        thumb = f'<div class="journal-thumb"><img src="../{esc(b["cover"])}" alt="{esc(b["title"])}" loading="lazy" /></div>'
+        thumb = f'<div class="journal-thumb"><img src="../{esc(b["cover"])}"{dims(b["cover"])} alt="{esc(b["title"])}" loading="lazy" /></div>'
     else:
         thumb = f'<div class="journal-thumb journal-thumb--empty"><span class="thumb-mono">AF</span><span class="thumb-cat">{esc(b["cat"])}</span></div>'
     cards.append(f'''        <a class="journal-card{' is-pending' if b.get('pending') else ''}" href="{esc(b['slug'])}.html" data-cat="{esc(b['cat'])}" data-year="{esc(yr)}">
