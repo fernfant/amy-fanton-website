@@ -1,6 +1,6 @@
 # Cert provisioning status
 
-_Last checked: 2026-05-30 12:12:55 +04_
+_Last checked: 2026-05-30 19:31:53 +04_
 
 | field | value |
 |---|---|
@@ -8,6 +8,6 @@ _Last checked: 2026-05-30 12:12:55 +04_
 | https_enforced | `False` |
 | live HTTPS code | `000` |
 | www -> (Cloudflare) | fernfant.github.io. |
-| apex A (Cloudflare) | 185.199.111.153, 185.199.109.153, 185.199.108.153, 185.199.110.153 |
+| apex A (Cloudflare) | 185.199.109.153, 185.199.110.153, 185.199.111.153, 185.199.108.153 |
 
 Waiting on Let's Encrypt to validate against clean DNS. No manual re-triggers (they reset the clock).
