@@ -202,7 +202,7 @@ HEAD = '''<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Theano+Didot&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../styles.css?v=131" />
 </head>
 <body>
   {nav}
@@ -282,13 +282,13 @@ for b in built:
       "link":'<path d="M3.9 12a3.1 3.1 0 0 1 3.1-3.1h4V7H7a5 5 0 0 0 0 10h4v-1.9H7A3.1 3.1 0 0 1 3.9 12zM9 13h6v-2H9v2zm8-6h-4v1.9h4a3.1 3.1 0 0 1 0 6.2h-4V17h4a5 5 0 0 0 0-10z"/>',
     }
     def _ic(k): return f'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">{_ICON[k]}</svg>'
-    share = (f'<div class="post-share"><span class="post-share-label">Share</span>'
+    share = (f'<div class="post-share"><span class="post-share-label">Share this story</span><div class="share-row">'
       f'<a class="share-btn" href="https://pinterest.com/pin/create/button/?url={_qu}&media={_qi}&description={_qt}" target="_blank" rel="noopener" aria-label="Pin on Pinterest">{_ic("pin")}</a>'
       f'<a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u={_qu}" target="_blank" rel="noopener" aria-label="Share on Facebook">{_ic("fb")}</a>'
       f'<a class="share-btn" href="https://wa.me/?text={_qt}%20{_qu}" target="_blank" rel="noopener" aria-label="Share on WhatsApp">{_ic("wa")}</a>'
       f'<a class="share-btn" href="mailto:?subject={_qt}&body={_qu}" aria-label="Share by email">{_ic("mail")}</a>'
       f'<button class="share-btn share-copy" type="button" data-url="{_url}" aria-label="Copy link">{_ic("link")}</button>'
-      f'</div>')
+      f'</div></div>')
     page = HEAD.format(title=esc(b["title"]+" — Amy Fanton Photography"),
                        desc=esc(b["title"]+" — wedding and portrait photography by Amy Fanton."), nav=NAV,
                        canonical=f"{BASE}blog/{b['slug']}.html",
