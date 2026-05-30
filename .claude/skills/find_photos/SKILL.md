@@ -43,6 +43,15 @@ Generate labeled grids so you can actually look at the images (don't guess from 
 ```
 View each `/tmp/match_sheet_NN.png` with the Read tool. ~440 images → ~9–10 sheets. To narrow first, sheet a likely source or use `--grep` (e.g. `--grep wedding`) or point at specific `Vault/<source>` / `Vault/Wayback-Recovered/<related-slug>` folders. For shortlisted images, open the full-size file to confirm the scene before recommending it.
 
+### 4b. Augment from published sources when the vault is thin
+The local vault is incomplete — many shoots were only partially recovered. If a post has few/no good vault matches, **go find more of Amy's own published photos** before settling:
+1. **Check the site's own Press section + her directory profiles** (Rock My Wedding, Love My Dress) — a post often maps to a press feature with the full gallery.
+2. **Web-search the specific shoot**: venue + couple + distinctive details + "Amy Fanton" (e.g. `Amy Fanton "Fig House" Los Angeles wedding`). The post text usually names the venue/colors/details — use them.
+3. **Dead press page?** RMW (and others) 301 a removed *article* to the homepage (200 → `url_effective` = the homepage = dead). But the **image CDN usually still serves the files** — pull the gallery URLs from a Wayback capture of the page (`web.archive.org/cdx/search/cdx?url=<page>`, fetch a 200 snapshot with `id_`, grep for the shoot's image URLs incl. the Pinterest `media=` links), then download the **bare original path** (e.g. `rockmywedding.co.uk/wp-content/gallery/<slug>/<file>.jpg`, no `WxH/` resize prefix = largest). Throttle (~0.3s) to avoid rate-limiting.
+4. **⚠️ CRITICAL — verify the photographer credit before using ANY off-site photo.** Popular venues are shot by many photographers; a feature of the *same venue* is often a *different couple by a different photographer*. Only use images explicitly credited to **Amy Fanton** (credit line and/or filename like `Fanton-Photography-NNN.jpg`). If the credit is anyone else (or absent), do **not** use them — treat like stock. Amy's text may also mention a second shooter; her published galleries are still credited to her studio, but never pull from a feature credited to another studio.
+
+Staged downloads go in `/tmp/<slug>/`; contact-sheet and curate them the same as vault images. These are still Amy's authorized photos (no consent flag), but copyright-credit verification above is mandatory.
+
 ### 5. Rank candidates + duplicate check
 Pick the images that match the brief. For each candidate note **why** it fits. **Important:** if a candidate's provenance shows it already belongs to another post (`Wayback-Recovered__<other-slug>__…`), flag that reusing it duplicates a photo already shown elsewhere on the site. Let the user decide, don't silently reuse.
 
