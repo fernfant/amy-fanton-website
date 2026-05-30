@@ -53,7 +53,11 @@ The local vault is incomplete — many shoots were only partially recovered. If 
 Staged downloads go in `/tmp/<slug>/`; contact-sheet and curate them the same as vault images. These are still Amy's authorized photos (no consent flag), but copyright-credit verification above is mandatory.
 
 ### 5. Rank candidates + duplicate check
-Pick the images that match the brief. For each candidate note **why** it fits. **Important:** if a candidate's provenance shows it already belongs to another post (`Wayback-Recovered__<other-slug>__…`), flag that reusing it duplicates a photo already shown elsewhere on the site. Let the user decide, don't silently reuse.
+First decide the **post type** — it flips the matching rule:
+- **Single-shoot post** (one wedding/engagement/session, e.g. "Louise Roe's Dorney Court Wedding", "Goodbye London Couple's Shoot") → all photos must be the **same couple**. Never mix couples; pull only that shoot's frames.
+- **Tips / advice / roundup / inspiration post** (e.g. "Best Tips for Beautiful Engagement Photos", "Best Proposal Photography Ideas") → the photos are **illustrative**, so a **variety from several different couples/sessions is correct and desired**. Pulling a few strong frames from multiple existing galleries (Hyde Park, Kensington, a proposal, a flower field…) is the right move — reuse across the source post and the tips post is fine/expected here, not a problem.
+
+Pick the images that match the brief; for each note **why** it fits. For single-shoot posts: if a candidate's provenance shows it belongs to another shoot (`Wayback-Recovered__<other-slug>__…`), flag that reusing it would mix couples — let the user decide, don't silently reuse. For tips/roundup posts, that same cross-shoot variety is the goal.
 
 ### 6. Prompt for confirmation — DO NOT copy yet
 **Always present at least 3 distinct candidate options**, each with a clear one-line description so the user can choose without opening the file. For every candidate give: `#N · filename · what the photo shows (subject/location/light/wardrobe) · why it matches the brief · any duplicate caveat`. If fewer than 3 vault images plausibly fit, say so explicitly and still surface the 3 closest (clearly labeling weaker matches) rather than narrowing to one.

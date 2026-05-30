@@ -22,7 +22,6 @@ _23 posts have text + a cover but no gallery. Their old galleries are not recove
 | 7 August 2015 | Weddings | London Wedding Photography at the Morton&#x27;s Club | 61 | `Vault/Wayback-Recovered/london-wedding-photography-at-the-mortons-club/` |
 | 1 September 2016 | Engagements | London Engagement Photos | 28 | `Vault/Wayback-Recovered/london-engagement-photos/` |
 | 15 February 2016 | Inspiration | Surrey Wedding Photography | 29 | `Vault/Wayback-Recovered/surrey-wedding-photography-mayfield-lavender-wedding-inspiration/` |
-| 15 October 2016 | Engagements | Best tips for beautiful Engagement Photos | 14 | `Vault/Wayback-Recovered/best-tips-for-beautiful-engagement-photos/` |
 | 20 September 2016 | Weddings | Venice Elopement Photographer | 33 | `Vault/Wayback-Recovered/venice-wedding-photography/` |
 | 21 August 2016 | Weddings | Christmas Hengrave Hall Wedding Photography | 54 | `Vault/Wayback-Recovered/christmas-hengrave-hall-wedding-photography/` |
 | 31 August 2016 | Inspiration | Pink &amp; Blue Harkness Wedding Photography | 14 | `Vault/Wayback-Recovered/coastal-bridal-shoot/` |
