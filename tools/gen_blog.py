@@ -30,6 +30,33 @@ def og_image(src_rel, out_rel, W=1200, H=630):
 
 ROOT = pathlib.Path("/Users/fernando/Projects/amy-fanton-website")
 BASE = "https://www.fantonphotography.com/"
+
+def meta_desc(b):
+    """Unique meta description = the post's first real sentence (~155 chars)."""
+    for kind, txt in b.get("paras", []):
+        t = re.sub(r"\s+", " ", txt).strip()
+        if len(t) >= 50:
+            if len(t) > 155:
+                t = t[:152].rsplit(" ", 1)[0] + "…"
+            return t
+    return b["title"] + " — wedding and portrait photography by Amy Fanton."
+
+def post_schema(b, url, ogimg, desc):
+    """Article + BreadcrumbList JSON-LD for a Journal post."""
+    pub = {"@type": "Organization", "name": "Amy Fanton Photography",
+           "logo": {"@type": "ImageObject", "url": BASE + "icon-512.png"}}
+    article = {"@context": "https://schema.org", "@type": "Article",
+               "headline": b["title"], "image": ogimg, "description": desc,
+               "author": pub, "publisher": pub, "mainEntityOfPage": url}
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", b.get("date_iso", "") or ""):
+        article["datePublished"] = b["date_iso"]
+    crumbs = {"@context": "https://schema.org", "@type": "BreadcrumbList",
+              "itemListElement": [
+                  {"@type": "ListItem", "position": 1, "name": "Home", "item": BASE},
+                  {"@type": "ListItem", "position": 2, "name": "Journal", "item": BASE + "blog/index.html"},
+                  {"@type": "ListItem", "position": 3, "name": b["title"], "item": url}]}
+    return ('<script type="application/ld+json">' + json.dumps(article) + "</script>\n    "
+            '<script type="application/ld+json">' + json.dumps(crumbs) + "</script>")
 IMG  = ROOT/"images/blog"
 GAL  = IMG/"gallery"
 BLOGDIR = ROOT/"blog"
@@ -271,6 +298,7 @@ for b in built:
     datedisp = b["date_iso"] if b["is_year"] else disp_date(b["date_iso"])
     hero = f'<div class="post-hero"><img src="../{esc(b["cover"])}"{dims(b["cover"])} alt="{esc(b["title"])}" /></div>' if b["cover"] else ""
     _og = og_image(b["cover"], f"images/og/{b['slug']}.jpg") if b.get("cover") else None
+    _ogimg = f"{BASE}{_og}" if _og else f"{BASE}images/og/home.jpg"
     _url = f"{BASE}blog/{b['slug']}.html"
     _qu = urllib.parse.quote(_url, safe=""); _qt = urllib.parse.quote(b["title"], safe="")
     _qi = urllib.parse.quote(f"{BASE}{_og}" if _og else f"{BASE}images/og/home.jpg", safe="")
@@ -289,11 +317,12 @@ for b in built:
       f'<a class="share-btn" href="mailto:?subject={_qt}&body={_qu}" aria-label="Share by email">{_ic("mail")}</a>'
       f'<button class="share-btn share-copy" type="button" data-url="{_url}" aria-label="Copy link">{_ic("link")}</button>'
       f'</div></div>')
+    _desc = meta_desc(b)
+    _schema = post_schema(b, _url, _ogimg, _desc)
     page = HEAD.format(title=esc(b["title"]+" — Amy Fanton Photography"),
-                       desc=esc(b["title"]+" — wedding and portrait photography by Amy Fanton."), nav=NAV,
-                       canonical=f"{BASE}blog/{b['slug']}.html",
-                       ogimage=f"{BASE}{_og}" if _og else f"{BASE}images/og/home.jpg")
+                       desc=esc(_desc), nav=NAV, canonical=_url, ogimage=_ogimg)
     page += f'''
+  {_schema}
   <article class="post">
     <header class="post-head">
       <p class="eyebrow">{esc(b["cat"])}</p>
