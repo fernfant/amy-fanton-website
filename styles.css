@@ -1051,8 +1051,57 @@ a { color: inherit; text-decoration: none; }
 .film-slide { flex: 0 0 auto; height: 100%; background: var(--bg-soft); }
 .film-slide img { height: 100%; width: auto; display: block; }
 @media (max-width: 680px) {
-  .filmstrip { height: 60vh; min-height: 340px; }
+  /* one whole photo per screen, fully visible (not height-cropped) */
+  .filmstrip { height: auto; }
+  .filmstrip-track { padding: 0; gap: 0; scroll-snap-type: x mandatory; }
+  .film-slide {
+    flex: 0 0 100vw;
+    width: 100vw;
+    height: auto;
+    scroll-snap-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+  }
+  .film-slide img { width: 100vw; height: auto; max-height: 80vh; object-fit: contain; }
+  .slider-arrow { display: none; }
 }
+
+/* ---- Portfolio shoot-type filter ---- */
+.pf-filter {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 auto 50px;
+}
+.pf-filter-btn {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 9px 20px;
+  cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+.pf-filter-btn:hover { color: var(--ink); border-color: var(--accent); }
+.pf-filter-btn.is-active { color: #fff; background: var(--accent); border-color: var(--accent); }
+.pf-group[hidden] { display: none; }
+
+/* ---- Enquire: plain text contact (same font as body) ---- */
+.contact-copy {
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+.contact-copy p { color: #4f4842; margin: 0 0 18px; }
+.contact-copy a { text-decoration: underline; text-underline-offset: 3px; }
+.contact-copy a:hover { color: var(--accent); }
 
 /* ---- Enquire pricing line ---- */
 .enquire-pricing {

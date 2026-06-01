@@ -239,7 +239,7 @@ HEAD = '''<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Theano+Didot&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css?v=202" />
+  <link rel="stylesheet" href="../styles.css?v=204" />
 </head>
 <body>
   {nav}
@@ -392,13 +392,23 @@ first_dims=dims(_first["cover"]) if _first else ""
 
 PF_JS='''(function(){
   var hero=document.getElementById("pfHeroImg");
-  if(!hero) return;
-  var items=[].slice.call(document.querySelectorAll(".pf-item[data-img]"));
-  function swap(a){ var s=a.getAttribute("data-img"); if(!s) return; hero.src=s; hero.alt=a.getAttribute("data-alt")||""; }
-  items.forEach(function(a){
-    a.addEventListener("mouseenter",function(){swap(a);});
-    a.addEventListener("focus",function(){swap(a);});
-  });
+  if(hero){
+    var items=[].slice.call(document.querySelectorAll(".pf-item[data-img]"));
+    var swap=function(a){ var s=a.getAttribute("data-img"); if(!s) return; hero.src=s; hero.alt=a.getAttribute("data-alt")||""; };
+    items.forEach(function(a){
+      a.addEventListener("mouseenter",function(){swap(a);});
+      a.addEventListener("focus",function(){swap(a);});
+    });
+  }
+  var btns=[].slice.call(document.querySelectorAll(".pf-filter-btn"));
+  var groups=[].slice.call(document.querySelectorAll(".pf-group"));
+  function filter(g){
+    groups.forEach(function(s){ s.hidden = (g!=="all" && s.id!==g); });
+    btns.forEach(function(b){ b.classList.toggle("is-active", b.dataset.g===g); });
+  }
+  btns.forEach(function(b){ b.addEventListener("click",function(){ filter(b.dataset.g); }); });
+  var h=(location.hash||"").replace("#","");
+  if(h==="wedding"||h==="family"||h==="newborn") filter(h);
 })();'''
 idx = HEAD.format(title="Portfolio &mdash; Amy Fanton Photography",
                   desc="The portfolio of Amy Fanton — wedding, family, newborn and maternity photography in London and around the world.", nav=NAV,
@@ -415,6 +425,12 @@ idx += f'''
       <h1 class="section-title">Portfolio</h1>
       <p class="contact-lead">Wedding, family, newborn and maternity stories &mdash; hover a title to preview.</p>
     </header>
+    <div class="pf-filter" role="tablist" aria-label="Filter by shoot type">
+      <button class="pf-filter-btn is-active" type="button" data-g="all">All</button>
+      <button class="pf-filter-btn" type="button" data-g="wedding">Weddings</button>
+      <button class="pf-filter-btn" type="button" data-g="family">Family</button>
+      <button class="pf-filter-btn" type="button" data-g="newborn">Newborn &amp; Maternity</button>
+    </div>
     <div class="pf-layout">
       <div class="pf-lists">
       {groups_block}
