@@ -31,6 +31,14 @@ def og_image(src_rel, out_rel, W=1200, H=630):
 ROOT = pathlib.Path("/Users/fernando/Projects/amy-fanton-website")
 BASE = "https://www.fantonphotography.com/"
 
+def page_title(b):
+    """SEO title ≤ ~60 chars: keep the studio suffix only if it fits."""
+    base = b["title"].strip()
+    for suffix in (" — Amy Fanton Photography", " · Amy Fanton", ""):
+        if len(base + suffix) <= 60:
+            return base + suffix
+    return base  # base itself is long; use as-is (give it a TITLE_OVERRIDE to shorten)
+
 def meta_desc(b):
     """Unique meta description = the post's first real sentence (~155 chars)."""
     for kind, txt in b.get("paras", []):
@@ -75,6 +83,7 @@ TITLE_OVERRIDE = {
  "mr-charming-june-21-2013": "Mr. Charming",
  "party-of-six-in-stonington-ct-june-22-2013": "Party of Six in Stonington",
  "three-is-the-magic-number-wilcox-park-ri": "Three is the Magic Number",
+ "pregnancy-photography-session-hampstead-heath-london": "A Hampstead Heath Maternity Shoot",
 }
 GAL.mkdir(parents=True, exist_ok=True)
 BLOGDIR.mkdir(exist_ok=True)
@@ -319,7 +328,7 @@ for b in built:
       f'</div></div>')
     _desc = meta_desc(b)
     _schema = post_schema(b, _url, _ogimg, _desc)
-    page = HEAD.format(title=esc(b["title"]+" — Amy Fanton Photography"),
+    page = HEAD.format(title=esc(page_title(b)),
                        desc=esc(_desc), nav=NAV, canonical=_url, ogimage=_ogimg)
     page += f'''
   {_schema}
