@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Enquire — Amy Fanton Photography</title>
-  <meta name="description" content="Get in touch with Amy Fanton to enquire about wedding and portrait photography in London and worldwide — by email or phone." />
+  <meta name="description" content="Get in touch with Amy Fanton to enquire about wedding and portrait photography in London and worldwide." />
   <link rel="canonical" href="https://www.fantonphotography.com/enquire.html" />
   <meta name="theme-color" content="#2b2724" />
   <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Theano+Didot&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=204" />
+  <link rel="stylesheet" href="styles.css?v=206" />
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"ContactPage","name":"Enquire — Amy Fanton Photography","url":"https://www.fantonphotography.com/enquire.html","isPartOf":{"@type":"WebSite","name":"Amy Fanton Photography","url":"https://www.fantonphotography.com/"}}
   </script>
@@ -45,19 +45,36 @@
     <header class="section-head">
       <p class="eyebrow">Inquiries</p>
       <h1 class="section-title">Get in Touch</h1>
-    </header>
-    <div class="contact-copy">
-      <p>
+      <p class="contact-lead">
         I take on a limited number of commissions each year so I can give every couple my
         full attention. If you love what you see, I&rsquo;d love to hear your story.
       </p>
+    </header>
+
+    <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY" />
+      <input type="hidden" name="subject" value="New enquiry from fantonphotography.com" />
+      <input type="hidden" name="from_name" value="Fanton Photography website" />
+      <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off" />
+      <div class="form-row">
+        <label class="field">Name<input type="text" name="name" required /></label>
+        <label class="field">Email<input type="email" name="email" required /></label>
+      </div>
+      <div class="form-row">
+        <label class="field">Wedding date<input type="text" name="wedding_date" placeholder="Approximate is fine" /></label>
+        <label class="field">Location or venue<input type="text" name="location" /></label>
+      </div>
+      <label class="field">Tell me your story<textarea name="message" rows="5" required></textarea></label>
+      <button type="submit" class="btn btn-dark">Send enquiry</button>
+      <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+    </form>
+
+    <div class="contact-copy">
       <p>
-        Email <a href="mailto:afetherston@gmail.com">afetherston@gmail.com</a>
+        Or reach me directly &mdash; email <a href="mailto:amy@fantonphotography.com">amy@fantonphotography.com</a>
         or call <a href="tel:+447462907790">07462 907790</a>.
       </p>
-      <p>
-        Wedding collections begin at &pound;6,000 and family sessions from &pound;2,000.
-      </p>
+      <p>Wedding collections begin at &pound;6,000 and family sessions from &pound;2,000.</p>
     </div>
   </section>
 
@@ -67,6 +84,6 @@
     <p class="footer-copy">&copy; <span id="year"></span> Amy Fanton Photography. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=206"></script>
 </body>
 </html>
