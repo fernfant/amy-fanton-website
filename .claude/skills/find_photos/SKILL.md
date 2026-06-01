@@ -74,8 +74,34 @@ Verify `blog/<slug>.html` now has a `post-hero` and the expected number of `gall
 ### 8. Hand off
 Report the new pending count and that releasing a version (commit/tag/push) is a separate step the user can ask for.
 
+## Fixing a single-couple post that shows the WRONG / mixed couple
+
+A common bug: a single-shoot post (e.g. "London Engagement Photos") shows
+**two different couples**. Fix it like this:
+
+1. **Anchor to the couple the site already commits to.** If that couple also
+   appears on the **homepage slideshow** or elsewhere, *that* is the canonical
+   couple for the post — match to that exact shoot. (The user will often tell
+   you "the correct one is the one on the slider.")
+2. **Remove every frame of the other couple** from the post's gallery source.
+3. **Verify identity before adding any frame — do NOT trust contact-sheet
+   thumbnails to match faces** across a large set (the IG set has ~80 images of
+   many couples). Open candidates full-size and compare the *same* bride/groom/
+   gown/setting. One wrong guess re-introduces the mix you're fixing.
+4. **When you can't confidently confirm a frame is the same couple, STOP and
+   ask the user for the exact vault filenames** (they can supply IG filenames
+   like `Instagram-Profile__ig_<code>.jpg`). Never pad the gallery with
+   maybe-matches.
+5. **Mine diptychs already in the library.** Files like `images/originals/
+   photo-07.jpg` are two stitched frames of one couple — crop a half
+   (`PIL Image.crop`) to yield an extra clean frame of the *same* couple
+   without any mixing risk.
+
 ## Guardrails
 - These are Amy's (the user's wife's) authorized photos — no consent flag needed.
 - Never add nude/boudoir maternity; clothed only.
 - Never invent or download stock images — only use what's already in the vault.
 - Always confirm before copying; never auto-publish.
+- **Single-couple integrity:** in a single-shoot post, every photo must be the
+  same couple. If unsure whether a frame matches, ask for the filename rather
+  than guess.
