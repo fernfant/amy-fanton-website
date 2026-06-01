@@ -112,7 +112,7 @@ CUR = [
  ("kensington-newborn-photography","text","Newborn & Maternity",None,None,None,None,None),
  ("hyde-park-maternity-shoot","text","Family",None,None,None,None,None),
  ("tigre-argentina-wedding-photography","text","Weddings","argentina-elopement",
-   "I’ve done my own little blog post on this elegant Argentinian shoot in Tigre — pop over and take a look at some of my favourites from this dreamy day!",None,
+   None,None,
    "Tigre Argentina Wedding Photography",None),
  ("richmond-park-family-shoot","text","Family",None,None,None,None,None),
  ("london-autumn-maternity-shoot","text","Newborn & Maternity",None,None,None,None,None),
