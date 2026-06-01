@@ -1053,3 +1053,17 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 680px) {
   .filmstrip { height: 60vh; min-height: 340px; }
 }
+
+/* ---- Enquire pricing line ---- */
+.enquire-pricing {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin: 22px 0 0;
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--ink);
+}
+.enquire-pricing strong { font-weight: 400; color: var(--accent); }
+.enquire-pricing .sep { color: var(--line); }
