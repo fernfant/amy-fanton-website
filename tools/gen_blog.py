@@ -188,7 +188,7 @@ def copy_gallery(slug, src):
     i=0
     for f in files:
         if not valid_jpeg(f): continue
-        dest = out/f"{i:02d}.jpg"; shutil.copy(f, dest); i+=1
+        dest = out/f"{slug}-{i:02d}.jpg"; shutil.copy(f, dest); i+=1
         res.append(f"images/blog/gallery/{slug}/{dest.name}")
     return res
 
