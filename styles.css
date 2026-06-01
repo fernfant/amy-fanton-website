@@ -1116,3 +1116,19 @@ a { color: inherit; text-decoration: none; }
 }
 .enquire-pricing strong { font-weight: 400; color: var(--accent); }
 .enquire-pricing .sep { color: var(--line); }
+
+/* ---- Homepage photo grid (masonry, like the original site) ---- */
+.home-grid {
+  column-count: 3;
+  column-gap: 12px;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 16px 14px 80px;
+}
+.home-grid figure { margin: 0 0 12px; break-inside: avoid; }
+.home-grid img { width: 100%; height: auto; display: block; }
+@media (max-width: 980px) { .home-grid { column-count: 2; } }
+@media (max-width: 520px) {
+  .home-grid { column-count: 2; column-gap: 8px; padding: 10px 8px 56px; }
+  .home-grid figure { margin: 0 0 8px; }
+}
