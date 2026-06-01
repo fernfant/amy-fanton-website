@@ -1181,3 +1181,6 @@ a { color: inherit; text-decoration: none; }
   .ss-slide img { width: 100%; max-height: none; }
   .ss-arrow { display: none; }
 }
+
+/* Portfolio intro line — keep on one line (desktop) */
+.portfolio-index .contact-lead { max-width: none; }
