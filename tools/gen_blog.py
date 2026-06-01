@@ -199,14 +199,15 @@ def disp_date(iso):
     y,mo,d=m.groups(); return f"{int(d)} {MONTHS[int(mo)]} {y}"
 
 NAV = '''<header class="site-header" id="top">
-    <nav class="nav">
-      <a href="../index.html#portfolio" class="nav-link">Portfolio</a>
-      <a href="index.html" class="nav-link">Journal</a>
-      <a href="../index.html#about" class="nav-link">About</a>
-      <a href="../index.html#press" class="nav-link">Press</a>
-      <a href="../index.html#contact" class="nav-link">Contact</a>
-      <a href="https://www.instagram.com/amyfanton/" target="_blank" rel="noopener" class="nav-link">Instagram</a>
-    </nav>
+    <div class="site-nav">
+      <a class="wordmark" href="../index.html">Amy Fanton</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html" class="nav-link">Portfolio</a>
+        <a href="../about.html" class="nav-link">About</a>
+        <a href="../press.html" class="nav-link">Press</a>
+        <a href="../enquire.html" class="nav-link">Enquire</a>
+      </nav>
+    </div>
   </header>'''
 FOOTER = '''<footer class="site-footer">
     <p class="footer-brand">Amy Fanton Photography</p>
@@ -238,7 +239,7 @@ HEAD = '''<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Theano+Didot&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css?v=131" />
+  <link rel="stylesheet" href="../styles.css?v=202" />
 </head>
 <body>
   {nav}
@@ -343,7 +344,7 @@ for b in built:
         {body_html}
     </div>{gal_html}
     {share}
-    <p class="post-back"><a href="index.html">&larr; Back to the Journal</a></p>
+    <p class="post-back"><a href="index.html">&larr; Back to the Portfolio</a></p>
   </article>
 
   {FOOTER}
@@ -359,99 +360,79 @@ for b in built:
 '''
     (BLOGDIR/f"{b['slug']}.html").write_text(page)
 
-cards=[]
-for b in built:
-    datedisp = b["date_iso"] if b["is_year"] else disp_date(b["date_iso"])
-    yr = b["date_iso"][:4]
-    if b["cover"]:
-        thumb = f'<div class="journal-thumb"><img src="../{esc(b["cover"])}"{dims(b["cover"])} alt="{esc(b["title"])}" loading="lazy" /></div>'
-    else:
-        thumb = f'<div class="journal-thumb journal-thumb--empty"><span class="thumb-mono">AF</span><span class="thumb-cat">{esc(b["cat"])}</span></div>'
-    cards.append(f'''        <a class="journal-card{' is-pending' if b.get('pending') else ''}" href="{esc(b['slug'])}.html" data-cat="{esc(b['cat'])}" data-year="{esc(yr)}">
-          {thumb}
-          <div class="journal-meta">
-            <p class="journal-cat">{esc(b['cat'])}</p>
-            <h2 class="journal-title">{esc(b['title'])}</h2>
-            <p class="journal-date">{esc(datedisp)}</p>
-          </div>
-        </a>''')
+GROUPS=[("wedding","Wedding & Engagement",{"Weddings","Engagements","Inspiration","Travel"}),
+        ("family","Family & Children",{"Family"}),
+        ("newborn","Newborn & Maternity",{"Newborn & Maternity"})]
 
-from collections import Counter
-CAT_ORDER=["Weddings","Engagements","Family","Newborn & Maternity","Inspiration"]
-cat_counts=Counter(b["cat"] for b in built)
-cats=[c for c in CAT_ORDER if c in cat_counts]+[c for c in cat_counts if c not in CAT_ORDER]
-years=sorted({b["date_iso"][:4] for b in built}, reverse=True)
-cat_btns=[f'<button class="filter-btn is-active" data-type="cat" data-val="all">All Stories <span class="filter-count">{len(built)}</span></button>']
-for c in cats:
-    cat_btns.append(f'<button class="filter-btn" data-type="cat" data-val="{esc(c)}">{esc(c)} <span class="filter-count">{cat_counts[c]}</span></button>')
-year_btns=['<button class="filter-btn is-active" data-type="year" data-val="all">All Years</button>']
-for y in years:
-    year_btns.append(f'<button class="filter-btn" data-type="year" data-val="{esc(y)}">{esc(y)}</button>')
-ind='\n          '
-sidebar=f'''<aside class="journal-sidebar">
-        <div class="filter-group" data-group="cat">
-          <p class="filter-head">Browse</p>
-          {ind.join(cat_btns)}
-        </div>
-        <div class="filter-group filter-group-years" data-group="year">
-          <p class="filter-head">By Year</p>
-          <div class="filter-years">{ind.join(year_btns)}</div>
-        </div>
-      </aside>'''
-FILTER_JS='''(function(){
-  var state={cat:"all",year:"all"};
-  var cards=[].slice.call(document.querySelectorAll(".journal-card"));
-  var btns=[].slice.call(document.querySelectorAll(".filter-btn"));
-  var empty=document.getElementById("journalEmpty");
-  function apply(){
-    var shown=0;
-    cards.forEach(function(c){
-      var ok=(state.cat==="all"||c.dataset.cat===state.cat)&&(state.year==="all"||c.dataset.year===state.year);
-      c.hidden=!ok; if(ok)shown++;
-    });
-    if(empty)empty.hidden=shown>0;
-  }
-  btns.forEach(function(b){
-    b.addEventListener("click",function(){
-      var t=b.dataset.type; state[t]=b.dataset.val;
-      btns.forEach(function(o){ if(o.dataset.type===t) o.classList.toggle("is-active",o===b); });
-      apply();
-    });
+def pf_items(catset):
+    lis=[]
+    for b in built:
+        if b["cat"] not in catset: continue
+        if b.get("cover"):
+            lis.append(f'<li><a class="pf-item" href="{esc(b["slug"])}.html" data-img="../{esc(b["cover"])}" data-alt="{esc(b["title"])}">{esc(b["title"])}</a></li>')
+        else:
+            lis.append(f'<li><a class="pf-item pf-item--nopic" href="{esc(b["slug"])}.html">{esc(b["title"])}</a></li>')
+    return "\n          ".join(lis)
+
+groups_html=[]
+for gid,gtitle,catset in GROUPS:
+    items=pf_items(catset)
+    if not items: continue
+    groups_html.append(f'''<section class="pf-group" id="{gid}">
+        <h2 class="pf-group-title">{esc(gtitle)}</h2>
+        <ul class="pf-list">
+          {items}
+        </ul>
+      </section>''')
+groups_block="\n      ".join(groups_html)
+_first=next((b for b in built if b.get("cover")), None)
+first_cover=f'../{esc(_first["cover"])}' if _first else "../images/og/home.jpg"
+first_alt=esc(_first["title"]) if _first else "Amy Fanton Photography"
+first_dims=dims(_first["cover"]) if _first else ""
+
+PF_JS='''(function(){
+  var hero=document.getElementById("pfHeroImg");
+  if(!hero) return;
+  var items=[].slice.call(document.querySelectorAll(".pf-item[data-img]"));
+  function swap(a){ var s=a.getAttribute("data-img"); if(!s) return; hero.src=s; hero.alt=a.getAttribute("data-alt")||""; }
+  items.forEach(function(a){
+    a.addEventListener("mouseenter",function(){swap(a);});
+    a.addEventListener("focus",function(){swap(a);});
   });
 })();'''
-idx = HEAD.format(title="Journal &mdash; Amy Fanton Photography",
-                  desc="Stories from weddings, elopements and portrait sessions photographed by Amy Fanton in London and around the world.", nav=NAV,
+idx = HEAD.format(title="Portfolio &mdash; Amy Fanton Photography",
+                  desc="The portfolio of Amy Fanton — wedding, family, newborn and maternity photography in London and around the world.", nav=NAV,
                   canonical=f"{BASE}blog/index.html",
                   ogimage=f"{BASE}images/og/home.jpg")
 og_image("images/originals/photo-17.jpg", "images/og/home.jpg")
 idx += f'''
-  <section class="section journal-intro">
+  <script type="application/ld+json">
+  {{"@context":"https://schema.org","@type":"CollectionPage","name":"Portfolio — Amy Fanton Photography","url":"{BASE}blog/index.html","isPartOf":{{"@type":"WebSite","name":"Amy Fanton Photography","url":"{BASE}"}}}}
+  </script>
+  <section class="section portfolio-index">
     <header class="section-head">
-      <p class="eyebrow">The Journal</p>
-      <h1 class="section-title">Stories &amp; Sessions</h1>
-      <p class="contact-lead">Weddings, elopements and portrait sessions from London and far beyond &mdash; in my own words.</p>
+      <p class="eyebrow">Selected Work</p>
+      <h1 class="section-title">Portfolio</h1>
+      <p class="contact-lead">Wedding, family, newborn and maternity stories &mdash; hover a title to preview.</p>
     </header>
-    <div class="journal-layout">
-      {sidebar}
-      <div class="journal-main">
-        <div class="journal-grid">
-{chr(10).join(cards)}
-        </div>
-        <p class="journal-empty" id="journalEmpty" hidden>No stories in this view yet.</p>
+    <div class="pf-layout">
+      <div class="pf-lists">
+      {groups_block}
       </div>
+      <div class="pf-hero"><img id="pfHeroImg" src="{first_cover}"{first_dims} alt="{first_alt}" /></div>
     </div>
   </section>
 
   {FOOTER}
   <script src="../script.js"></script>
-  <script>{FILTER_JS}</script>
+  <script>{PF_JS}</script>
 </body>
 </html>
 '''
 (BLOGDIR/"index.html").write_text(idx)
 
 # sitemap.xml — home + journal index + every post (studio page excluded on purpose)
-urls=[BASE, BASE+"blog/index.html"] + [f"{BASE}blog/{b['slug']}.html" for b in built]
+urls=[BASE, BASE+"about.html", BASE+"press.html", BASE+"enquire.html", BASE+"blog/index.html"] + [f"{BASE}blog/{b['slug']}.html" for b in built]
 sm=['<?xml version="1.0" encoding="UTF-8"?>','<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
 for u in urls:
     sm.append(f'  <url><loc>{u}</loc></url>')
