@@ -179,6 +179,17 @@ def valid_jpeg(p):
         with open(p,"rb") as f: return f.read(3)==b"\xff\xd8\xff"
     except Exception: return False
 
+def save_web(src, dest, maxedge=1600, q=80):
+    """Resize (cap long edge) + re-encode optimized progressive JPEG for the web."""
+    with Image.open(src) as im:
+        im = im.convert("RGB")
+        w, h = im.size
+        if max(w, h) > maxedge:
+            s = maxedge / max(w, h)
+            im = im.resize((round(w*s), round(h*s)), Image.LANCZOS)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        im.save(dest, "JPEG", quality=q, optimize=True, progressive=True)
+
 def copy_gallery(slug, src):
     src = pathlib.Path(src)
     if not src.exists(): return []
@@ -188,7 +199,7 @@ def copy_gallery(slug, src):
     i=0
     for f in files:
         if not valid_jpeg(f): continue
-        dest = out/f"{slug}-{i:02d}.jpg"; shutil.copy(f, dest); i+=1
+        dest = out/f"{slug}-{i:02d}.jpg"; save_web(f, dest); i+=1
         res.append(f"images/blog/gallery/{slug}/{dest.name}")
     return res
 
