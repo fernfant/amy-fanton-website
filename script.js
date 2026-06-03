@@ -13,7 +13,7 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
   function go(k) { i = (k + n) % n; track.style.transform = "translateX(" + (-i * 100) + "%)"; }
   const next = () => go(i + 1);
   const prev = () => go(i - 1);
-  function start() { timer = setInterval(next, 3500); }
+  function start() { timer = setInterval(next, 2450); }
   function restart() { clearInterval(timer); start(); }
   const nb = document.getElementById("ssNext"), pb = document.getElementById("ssPrev");
   if (nb) nb.addEventListener("click", () => { next(); restart(); });
