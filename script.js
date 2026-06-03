@@ -13,11 +13,15 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
   function go(k) { i = (k + n) % n; track.style.transform = "translateX(" + (-i * 100) + "%)"; }
   const next = () => go(i + 1);
   const prev = () => go(i - 1);
-  function start() { timer = setInterval(next, 5000); }
+  function start() { timer = setInterval(next, 3500); }
   function restart() { clearInterval(timer); start(); }
   const nb = document.getElementById("ssNext"), pb = document.getElementById("ssPrev");
   if (nb) nb.addEventListener("click", () => { next(); restart(); });
   if (pb) pb.addEventListener("click", () => { prev(); restart(); });
+  // mobile/touch: tap the photo to advance (arrows are hidden on small screens)
+  if (window.matchMedia("(pointer: coarse)").matches) {
+    track.addEventListener("click", () => { next(); restart(); });
+  }
   stage.addEventListener("mouseenter", () => clearInterval(timer));
   stage.addEventListener("mouseleave", start);
   document.addEventListener("keydown", (e) => {

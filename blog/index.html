@@ -70,7 +70,6 @@
           <li><a class="pf-item" href="london-engagement-photos.html" data-img="../images/blog/gallery/london-engagement-photos/london-engagement-photos-00.jpg" data-alt="London Engagement Photos">London Engagement Photos</a></li>
           <li><a class="pf-item" href="coastal-bridal-shoot.html" data-img="../images/blog/coastal-bridal-shoot.jpg" data-alt="Pink &amp; Blue Harkness Wedding Photography">Pink &amp; Blue Harkness Wedding Photography</a></li>
           <li><a class="pf-item" href="christmas-hengrave-hall-wedding-photography.html" data-img="../images/blog/christmas-hengrave-hall-wedding-photography.jpg" data-alt="Christmas Hengrave Hall Wedding Photography">Christmas Hengrave Hall Wedding Photography</a></li>
-          <li><a class="pf-item" href="northumberland-country-garden-wedding.html" data-img="../images/blog/gallery/northumberland-country-garden-wedding/northumberland-country-garden-wedding-00.jpg" data-alt="An English Country Garden Wedding">An English Country Garden Wedding</a></li>
           <li><a class="pf-item" href="surrey-wedding-photography-mayfield-lavender-wedding-inspiration.html" data-img="../images/blog/surrey-wedding-photography-mayfield-lavender-wedding-inspiration.jpg" data-alt="Surrey Wedding Photography">Surrey Wedding Photography</a></li>
           <li><a class="pf-item" href="london-wedding-photographer-in-los-angeles.html" data-img="../images/blog/london-wedding-photographer-in-los-angeles.jpg" data-alt="London Wedding Photographer Los Angeles Wedding">London Wedding Photographer Los Angeles Wedding</a></li>
           <li><a class="pf-item" href="westonbirt-wedding-photography.html" data-img="../images/blog/westonbirt-wedding-photography.jpg" data-alt="Hermione Harbutt 2015 Collection">Hermione Harbutt 2015 Collection</a></li>
@@ -146,19 +145,35 @@
   <script src="../script.js"></script>
   <script>(function(){
   var hero=document.getElementById("pfHeroImg");
-  if(hero){
-    var items=[].slice.call(document.querySelectorAll(".pf-item[data-img]"));
-    var swap=function(a){ var s=a.getAttribute("data-img"); if(!s) return; hero.src=s; hero.alt=a.getAttribute("data-alt")||""; };
+  var heroBox=document.querySelector(".pf-hero");
+  var header=document.querySelector(".site-header");
+  var items=[].slice.call(document.querySelectorAll(".pf-item[data-img]"));
+  var mq=window.matchMedia("(max-width: 860px)");
+  function swap(a){ if(!hero) return; var s=a.getAttribute("data-img"); if(!s) return; hero.src=s; hero.alt=a.getAttribute("data-alt")||""; }
+  function setTop(){ if(!heroBox) return; heroBox.style.top=(mq.matches&&header)?header.offsetHeight+"px":""; }
+  function onScroll(){
+    if(!hero||!heroBox||!mq.matches) return;            // mobile only; desktop uses hover
+    var line=heroBox.getBoundingClientRect().bottom+8, best=null, bd=1e9;
     items.forEach(function(a){
-      a.addEventListener("mouseenter",function(){swap(a);});
-      a.addEventListener("focus",function(){swap(a);});
+      if(!a.offsetParent) return;                         // skip hidden (filtered-out) items
+      var t=a.getBoundingClientRect().top;
+      if(t<=line+60){ var d=Math.abs(t-line); if(d<bd){ bd=d; best=a; } }
     });
+    if(best) swap(best);
   }
+  items.forEach(function(a){
+    a.addEventListener("mouseenter",function(){ if(!mq.matches) swap(a); });
+    a.addEventListener("focus",function(){ if(!mq.matches) swap(a); });
+  });
+  setTop(); onScroll();
+  window.addEventListener("resize",function(){ setTop(); onScroll(); });
+  window.addEventListener("scroll",function(){ requestAnimationFrame(onScroll); },{passive:true});
   var btns=[].slice.call(document.querySelectorAll(".pf-filter-btn"));
   var groups=[].slice.call(document.querySelectorAll(".pf-group"));
   function filter(g){
-    groups.forEach(function(s){ s.hidden = (g!=="all" && s.id!==g); });
-    btns.forEach(function(b){ b.classList.toggle("is-active", b.dataset.g===g); });
+    groups.forEach(function(s){ s.hidden=(g!=="all"&&s.id!==g); });
+    btns.forEach(function(b){ b.classList.toggle("is-active",b.dataset.g===g); });
+    requestAnimationFrame(onScroll);
   }
   btns.forEach(function(b){ b.addEventListener("click",function(){ filter(b.dataset.g); }); });
   var h=(location.hash||"").replace("#","");

@@ -403,19 +403,35 @@ first_dims=dims(_first["cover"]) if _first else ""
 
 PF_JS='''(function(){
   var hero=document.getElementById("pfHeroImg");
-  if(hero){
-    var items=[].slice.call(document.querySelectorAll(".pf-item[data-img]"));
-    var swap=function(a){ var s=a.getAttribute("data-img"); if(!s) return; hero.src=s; hero.alt=a.getAttribute("data-alt")||""; };
+  var heroBox=document.querySelector(".pf-hero");
+  var header=document.querySelector(".site-header");
+  var items=[].slice.call(document.querySelectorAll(".pf-item[data-img]"));
+  var mq=window.matchMedia("(max-width: 860px)");
+  function swap(a){ if(!hero) return; var s=a.getAttribute("data-img"); if(!s) return; hero.src=s; hero.alt=a.getAttribute("data-alt")||""; }
+  function setTop(){ if(!heroBox) return; heroBox.style.top=(mq.matches&&header)?header.offsetHeight+"px":""; }
+  function onScroll(){
+    if(!hero||!heroBox||!mq.matches) return;            // mobile only; desktop uses hover
+    var line=heroBox.getBoundingClientRect().bottom+8, best=null, bd=1e9;
     items.forEach(function(a){
-      a.addEventListener("mouseenter",function(){swap(a);});
-      a.addEventListener("focus",function(){swap(a);});
+      if(!a.offsetParent) return;                         // skip hidden (filtered-out) items
+      var t=a.getBoundingClientRect().top;
+      if(t<=line+60){ var d=Math.abs(t-line); if(d<bd){ bd=d; best=a; } }
     });
+    if(best) swap(best);
   }
+  items.forEach(function(a){
+    a.addEventListener("mouseenter",function(){ if(!mq.matches) swap(a); });
+    a.addEventListener("focus",function(){ if(!mq.matches) swap(a); });
+  });
+  setTop(); onScroll();
+  window.addEventListener("resize",function(){ setTop(); onScroll(); });
+  window.addEventListener("scroll",function(){ requestAnimationFrame(onScroll); },{passive:true});
   var btns=[].slice.call(document.querySelectorAll(".pf-filter-btn"));
   var groups=[].slice.call(document.querySelectorAll(".pf-group"));
   function filter(g){
-    groups.forEach(function(s){ s.hidden = (g!=="all" && s.id!==g); });
-    btns.forEach(function(b){ b.classList.toggle("is-active", b.dataset.g===g); });
+    groups.forEach(function(s){ s.hidden=(g!=="all"&&s.id!==g); });
+    btns.forEach(function(b){ b.classList.toggle("is-active",b.dataset.g===g); });
+    requestAnimationFrame(onScroll);
   }
   btns.forEach(function(b){ b.addEventListener("click",function(){ filter(b.dataset.g); }); });
   var h=(location.hash||"").replace("#","");
