@@ -79,11 +79,15 @@ except FileNotFoundError:
 # clean up a few harvested titles
 TITLE_OVERRIDE = {
  "american-family-photographer-in-london": "An American Family in London",
- "june-20-2013": "Little Ladies at Harkness",
- "mr-charming-june-21-2013": "Mr. Charming",
- "party-of-six-in-stonington-ct-june-22-2013": "Party of Six in Stonington",
- "three-is-the-magic-number-wilcox-park-ri": "Three is the Magic Number",
+ "june-20-2013": "Connecticut Family Photography at Harkness",
+ "mr-charming-june-21-2013": "Mr. Charming — Connecticut Family Photography",
+ "party-of-six-in-stonington-ct-june-22-2013": "Family Photography in Stonington, Connecticut",
+ "three-is-the-magic-number-wilcox-park-ri": "Family Photography at Wilcox Park, Rhode Island",
+ "little-miss-biz-waterford-ct": "Baby & Family Photography in Waterford, CT",
  "pregnancy-photography-session-hampstead-heath-london": "A Hampstead Heath Maternity Shoot",
+ "london-anniversary-photography": "London Anniversary Couples Photography",
+ "london-autumn-childrens-portrait": "London Children's Autumn Portraits",
+ "london-couples-photography": "London Couples Photography Session",
 }
 GAL.mkdir(parents=True, exist_ok=True)
 BLOGDIR.mkdir(exist_ok=True)
@@ -110,11 +114,11 @@ CUR = [
  ("iconic-london-family-photography","text","Family",None,
    "How picture perfect is this family?! More from this iconic London mini session — walking across Westminster Bridge with Big Ben behind them.",None,"Westminster London Family Photography",None),
  ("kensington-newborn-photography","text","Newborn & Maternity",None,None,None,None,None),
- ("hyde-park-maternity-shoot","text","Family",None,None,None,None,None),
+ ("hyde-park-maternity-shoot","text","Family",None,None,None,"Hyde Park Maternity Photography, London",None),
  ("tigre-argentina-wedding-photography","text","Weddings","argentina-elopement",
    None,None,
    "Tigre Argentina Wedding Photography",None),
- ("richmond-park-family-shoot","text","Family",None,None,None,None,None),
+ ("richmond-park-family-shoot","text","Family",None,None,None,"London Family Photography in Richmond Park",None),
  ("london-autumn-maternity-shoot","text","Newborn & Maternity",None,None,None,None,None),
  ("newborn-photography-in-london","text","Newborn & Maternity",None,None,None,None,None),
  ("london-wedding-photographer-in-buenos-aires-wedding-at-the-lowlands","text","Weddings","ba",None,None,None,None),
@@ -250,7 +254,7 @@ HEAD = '''<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Theano+Didot&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css?v=207" />
+  <link rel="stylesheet" href="../styles.css?v=209" />
 </head>
 <body>
   {nav}
