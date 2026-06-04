@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found — Amy Fanton Photography</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Open+Sans:wght@300;400;600&family=Theano+Didot&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css?v=209" />
+  <style>
+    .nf { min-height: 70vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; }
+    .nf h1 { font-family: var(--display, "Theano Didot", serif); font-size: clamp(28px, 5vw, 44px); margin: 0 0 10px; }
+    .nf p { max-width: 480px; margin: 0 auto 22px; }
+    .nf .links a { margin: 0 10px; }
+  </style>
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="site-nav">
+      <a class="wordmark" href="/index.html">Amy Fanton</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/blog/index.html" class="nav-link">Portfolio</a>
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/press.html" class="nav-link">Press</a>
+        <a href="/enquire.html" class="nav-link">Enquire</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="nf">
+    <h1>This page has moved</h1>
+    <p>The site has a new home. I'll take you to the homepage in a moment &mdash; or jump straight to the portfolio.</p>
+    <p class="links">
+      <a class="nav-link" href="/index.html">Home</a>
+      <a class="nav-link" href="/blog/index.html">Portfolio</a>
+      <a class="nav-link" href="/enquire.html">Enquire</a>
+    </p>
+  </main>
+
+  <script>setTimeout(function(){ location.replace("/"); }, 2500);</script>
+</body>
+</html>
