@@ -7,3 +7,4 @@ Vault/
 __pycache__/
 *.pyc
 tools/backlink_snapshots/
+tools/ahrefs_exports/*.csv
