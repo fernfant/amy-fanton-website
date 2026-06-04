@@ -6,3 +6,4 @@ Recovered/
 Vault/
 __pycache__/
 *.pyc
+tools/backlink_snapshots/
