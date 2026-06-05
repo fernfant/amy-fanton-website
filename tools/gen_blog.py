@@ -61,7 +61,7 @@ def post_schema(b, url, ogimg, desc):
     crumbs = {"@context": "https://schema.org", "@type": "BreadcrumbList",
               "itemListElement": [
                   {"@type": "ListItem", "position": 1, "name": "Home", "item": BASE},
-                  {"@type": "ListItem", "position": 2, "name": "Journal", "item": BASE + "blog/index.html"},
+                  {"@type": "ListItem", "position": 2, "name": "Portfolio", "item": BASE + "blog/index.html"},
                   {"@type": "ListItem", "position": 3, "name": b["title"], "item": url}]}
     return ('<script type="application/ld+json">' + json.dumps(article) + "</script>\n    "
             '<script type="application/ld+json">' + json.dumps(crumbs) + "</script>")
@@ -254,7 +254,7 @@ HEAD = '''<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Theano+Didot&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css?v=209" />
+  <link rel="stylesheet" href="../styles.css?v=210" />
 </head>
 <body>
   {nav}
@@ -349,6 +349,13 @@ for b in built:
     page += f'''
   {_schema}
   <article class="post">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span class="breadcrumb-sep" aria-hidden="true">&rsaquo;</span>
+      <a href="index.html">Portfolio</a>
+      <span class="breadcrumb-sep" aria-hidden="true">&rsaquo;</span>
+      <span class="breadcrumb-current" aria-current="page">{esc(b["title"])}</span>
+    </nav>
     <header class="post-head">
       <p class="eyebrow">{esc(b["cat"])}</p>
       <h1 class="post-title">{esc(b["title"])}</h1>
