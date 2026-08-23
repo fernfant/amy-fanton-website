@@ -8,3 +8,5 @@ __pycache__/
 *.pyc
 tools/backlink_snapshots/
 tools/ahrefs_exports/*.csv
+tools/gsc_exports/*.csv
+tools/rank_history.json
